@@ -32,10 +32,11 @@ start_date=start_date.strftime('%Y-%m-%d')
 end_date=end_date.strftime('%Y-%m-%d')
 
 panel_data = data.DataReader(tickers,'yahoo', start_date, end_date)
-
-data = panel_data[['Close', 'Adj Close']]
 close_data = panel_data['Close']
 adj_close_data = panel_data['Adj Close']
+
+st.session_state['close_data'] = close_data
+st.session_state['adj_close_data'] = adj_close_data
 
 return_series_adj = (adj_close_data.pct_change()+ 1).cumprod() - 1
 st.write(return_series_adj)
@@ -51,8 +52,7 @@ plt.show()
 st.pyplot(fig)
 #st.plotly_chart(fig)
 
-TechIndicator = copy.deepcopy(data)
-MACD=TechIndicator["Close"]
+MACD = copy.deepcopy(close_data)
 
 def calculate_MACD(stock):
     df=MACD[stock].to_frame()
