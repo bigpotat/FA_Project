@@ -55,12 +55,17 @@ def app():
                 Sell.append(np.nan)
         return (Buy,Sell)
 
+
+
+    #choose the stock and call calculate_MACD
     stock = st.selectbox(
      'Choose a stock to display its MACD',
       columns_list)
 
     df=calculate_MACD(stock)
 
+    
+    #plot 
     st.header("Here is MACD indicator")
     fig=plt.figure(figsize=(16,8))
     plt.style.use('fivethirtyeight')

@@ -13,6 +13,7 @@ def app():
     columns_list=columns.tolist()
 
     df = copy.deepcopy(close_data)
+    st.write(df)
 
 
     def get_sma(prices, rate):
@@ -24,6 +25,23 @@ def app():
         bollinger_up = sma + std * 2 # Calculate top band
         bollinger_down = sma - std * 2 # Calculate bottom band
         return bollinger_up, bollinger_down
+    
+    def get_signal(data):
+        buys = []
+        sells = []
+
+        for i in range(len(data[stock])):
+            if data["bollinger down"][i] > data[stock][i]:
+                buys.append(data[stock][i])
+                sells.append(np.nan)
+
+            elif data["bollinger up"][i] < data[stock][i]:
+                sells.append(data[stock][i])
+                buys.append(np.nan)
+            else:
+                sells.append(np.nan)
+                buys.append(np.nan)
+        return(buys,sells)
 
     stock = st.selectbox(
      'Choose a stock to display its Bollinger Band',
@@ -33,16 +51,20 @@ def app():
 
     df["bollinger up"] = bollinger_up
     df["bollinger down"] = bollinger_down
+    df["Buy"]=get_signal(df)[0]
+    df["Sell"]=get_signal(df)[1]
     #st.write(df)
 
-    fig=plt.figure(figsize=(16,8))
-    plt.style.use('fivethirtyeight')
-    plt.title(stock + ' Bollinger Bands')
-    plt.xlabel('Days')
-    plt.ylabel('Closing Prices')
-    plt.plot(df[stock], label=stock+' Closing Prices')
-    plt.plot(bollinger_up, label='Bollinger Up', c='g')
-    plt.plot(bollinger_down, label='Bollinger Down', c='r')
+    fig=plt.figure(figsize=(12.2,6.4))
+    x_axis=df.index
+    plt.fill_between(x_axis,df['bollinger up'],df['bollinger down'],facecolor='blue', alpha=0.3,label="Bollinger")
+    plt.scatter(df.index,df["Buy"],color="green",label="Buy",marker="^",s=100)
+    plt.scatter(df.index,df["Sell"],color="red",label="Sell",marker="v",s=100)
+    plt.plot(df[stock],label="Close Price",color="gold",alpha=0.5)
+    plt.xlabel("Date")
+    plt.ylabel("Price")
+    plt.title("Bollinger Band")
     plt.legend()
+    plt.xticks(rotation=45)
     plt.show()
     st.pyplot(fig)
