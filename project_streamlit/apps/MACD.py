@@ -11,6 +11,7 @@ import copy
 def app():
     st.image('./meta.jpg')
     close_data = st.session_state['close_data']
+    st.write(close_data)
     columns=close_data.columns
     columns_list=columns.tolist()
     #st.write(columns_list)
@@ -81,8 +82,8 @@ def app():
 
     fig=plt.figure(figsize=(16,8))
     plt.title(stock + ' MACD')
-    plt.scatter(df.index,df["Buy_Signal_Price"],color="green",label="Buy",marker="^",alpha=1)
-    plt.scatter(df.index,df["Sell_Signal_Price"],color="red",label="Sell",marker="v",alpha=1)
+    plt.scatter(df.index,df["Buy_Signal_Price"],color="green",label="Buy",marker="^",alpha=1,s=10*np.array(3)**2)
+    plt.scatter(df.index,df["Sell_Signal_Price"],color="red",label="Sell",marker="v",alpha=1,s=10*np.array(3)**2)
     plt.plot(df[stock],label="Close Price",alpha=0.35)
     plt.title(stock+":Close Price Buy & Sell Signals")
     plt.xlabel("Date")
