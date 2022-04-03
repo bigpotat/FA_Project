@@ -9,9 +9,10 @@ import copy
 
 
 def app():
-    st.image('./meta.jpg')
     close_data = st.session_state['close_data']
-    st.write(close_data)
+    #st.write(close_data)
+    st.write("Buy when MACD crosses above the singal line")
+    st.write("Sell when MACD crosses below the signal line")
     columns=close_data.columns
     columns_list=columns.tolist()
     #st.write(columns_list)

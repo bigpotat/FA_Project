@@ -53,7 +53,7 @@ def app():
     news_df = news_df.join(scores_df, rsuffix='_right')
     news_df['date'] = pd.to_datetime(news_df.date).dt.date
 
-    st.write(news_df.head())
+    #st.write(news_df.head())
 
     mean_scores = news_df.groupby(['ticker','date']).mean()
     mean_scores = mean_scores.unstack()

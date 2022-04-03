@@ -72,7 +72,7 @@ def implement_wr_macd_bb_strategy(prices, wr, macd, macd_signal, bollinger_up, b
 
 def app():
     ## upload title and image 
-    #st.image('./meta.jpg')
+    st.image('./meta.jpg')
     st.title("Financial Analytics Team Project Team 1 MetaVerse")   
     
     ## let user choose stock and date
@@ -95,14 +95,32 @@ def app():
 
     ## Get data for stock
     panel_data = data.DataReader(tickers,'yahoo', start_date, end_date)
-    st.write(panel_data)
     # data = panel_data[['Close', 'Adj Close']]
     close_data = panel_data['Close']
     adj_close_data = panel_data['Adj Close']
 
 
+    st.session_state['close_data'] = close_data
+    st.session_state['adj_close_data'] = adj_close_data
+    #st.write(st.session_state)
+    # generate return series diagram
+    
+    return_series_adj = (adj_close_data.pct_change()+ 1).cumprod() - 1
+    st.write(return_series_adj)
+    fig=plt.figure(figsize=(16,8))
+    plt.style.use('fivethirtyeight')
+    st.write("This is the return series for the selected stock(s) in line chart form")
+    for ticker in tickers:
+        plt.plot(return_series_adj[ticker],label=ticker)
+    plt.legend()
+    plt.title("Return Series")
+    plt.show()
+    st.pyplot(fig)
+
+
     total_invest_list=[]
     profit_percent_list=[]
+    st.write("Investment return  based on MACD, Bollinger Bond and Williams % R")
     investment_value=st.slider("Investment Value in $",min_value=10000,max_value=999999,value=10000,step=50000)
 
     for stock in tickers:
@@ -176,30 +194,6 @@ def app():
     if total_invest_list:
         d_data={
             "Total Investment Return":total_invest_list,
-            "Profit_Percentage":profit_percent_list}
+            "Profit_Percentage in %":profit_percent_list}
         display_df=pd.DataFrame(d_data,index=tickers)
         st.table(display_df)
-
-
-
-    
-
-
-
-    
-    st.session_state['close_data'] = close_data
-    st.session_state['adj_close_data'] = adj_close_data
-    # st.write(st.session_state)
-    # generate return series diagram
-    
-    return_series_adj = (adj_close_data.pct_change()+ 1).cumprod() - 1
-    st.write(return_series_adj)
-    fig=plt.figure(figsize=(16,8))
-    plt.style.use('fivethirtyeight')
-    st.write("This is the return series for the selected stock(s) in line chart form")
-    for ticker in tickers:
-        plt.plot(return_series_adj[ticker],label=ticker)
-    plt.legend()
-    plt.title("Return Series")
-    plt.show()
-    st.pyplot(fig)
