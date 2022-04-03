@@ -8,6 +8,18 @@ import streamlit as st
 import copy
 from matplotlib import *
 
+
+
+def get_sma(prices, rate):
+        return prices.rolling(rate).mean()
+
+def get_bollinger_bands(prices, rate=20):
+    sma = prices.rolling(rate).mean()
+    std = prices.rolling(rate).std()
+    bollinger_up = sma + std * 2 # Calculate top band
+    bollinger_down = sma - std * 2 # Calculate bottom band
+    return (bollinger_up, bollinger_down)
+
 def app():
     st.image('./meta.jpg')
     close_data = st.session_state['close_data']
@@ -17,27 +29,16 @@ def app():
     df = copy.deepcopy(close_data)
     st.write(df)
 
-
-    def get_sma(prices, rate):
-        return prices.rolling(rate).mean()
-
-    def get_bollinger_bands(prices, rate=20):
-        sma = prices.rolling(rate).mean()
-        std = prices.rolling(rate).std()
-        bollinger_up = sma + std * 2 # Calculate top band
-        bollinger_down = sma - std * 2 # Calculate bottom band
-        return (bollinger_up, bollinger_down)
-
     stock = st.selectbox(
-     'Choose a stock to display its Bollinger Band',
-      columns_list)
+    'Choose a stock to display its Bollinger Band',
+    columns_list)
 
     bollinger_up, bollinger_down = get_bollinger_bands(df[stock])
     df["bollinger_up"]=bollinger_up
     df["bollinger_down"]=bollinger_down
     df['Buy_Signal'] = np.where(df.bollinger_down > df[stock], True, False)
     df['Sell_Signal'] = np.where(df.bollinger_up < df[stock], True, False)
-    
+        
     buys = []
     sells = []
     open_position = False
