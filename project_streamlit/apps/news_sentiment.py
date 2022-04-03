@@ -55,11 +55,18 @@ def app():
 
     st.write(news_df.head())
 
-    st.write("end of sentiment analysis here")
-
-    fig=plt.figure(figsize=(16,8))
     mean_scores = news_df.groupby(['ticker','date']).mean()
     mean_scores = mean_scores.unstack()
     mean_scores = mean_scores.xs('compound', axis="columns").transpose()
-    mean_scores.plot(kind = 'bar')
-    st.pyplot(fig)
+
+    st.write(mean_scores)
+
+    for tick in tickers:
+        dfName = tick + "_sentiment"
+        dfName = news_df[news_df["ticker"]==tick]
+        dfName.groupby('date')['compound'].agg("mean")
+        fig=plt.figure(figsize=(16,8))
+        plt.plot(dfName.groupby('date')['compound'].agg("mean"),label=tick,color="red")
+        #dfName.plot(x="date",y="compound")
+        st.pyplot(fig)
+    
