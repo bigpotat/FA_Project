@@ -21,6 +21,8 @@ def app():
     st.title('ARIMA')
 
     close_data = st.session_state['close_data']
+    st.write("An autoregressive integrated moving average, or ARIMA, is a statistical analysis model ")
+    st.write("that uses time series data to either better understand the data set or to predict future trends")
 
     ticker = st.selectbox(
         'Choose one or multiple stock to display the return series and other technical indicators',

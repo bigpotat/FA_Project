@@ -59,7 +59,7 @@ def app():
     mean_scores = mean_scores.unstack()
     mean_scores = mean_scores.xs('compound', axis="columns").transpose()
 
-    st.write(mean_scores)
+    #st.write(mean_scores)
 
     for tick in tickers:
         dfName = tick + "_sentiment"
@@ -68,5 +68,6 @@ def app():
         fig=plt.figure(figsize=(16,8))
         plt.plot(dfName.groupby('date')['compound'].agg("mean"),label=tick,color="red")
         #dfName.plot(x="date",y="compound")
+        plt.title("Stock News Sentiment Analysis of  "+ tick)
         st.pyplot(fig)
     

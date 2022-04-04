@@ -73,7 +73,7 @@ def implement_wr_macd_bb_strategy(prices, wr, macd, macd_signal, bollinger_up, b
 def app():
     ## upload title and image 
     st.image('./meta.jpg')
-    st.title("Financial Analytics Team Project Team 1 MetaVerse")   
+    st.title("Financial Analytics Team Project Group 2 MetaVerse")   
     
     ## let user choose stock and date
     tickers = st.multiselect(
