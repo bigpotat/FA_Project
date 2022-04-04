@@ -116,7 +116,31 @@ def app():
     st.write('Forecast')
     #fc, se, conf = fitted.forecast(13, alpha=0.05)  # 95% conf
 
-    st.write(fitted.forecast(13,alpha=0.05))
+    # report performance
+    if (ticker == "FSLY"):
+        st.image("./asset/fsly_arima_forecast.png")
+        st.image("./asset/fsly_arima_perf.png")
+    elif (ticker == "IMMR"):
+        st.image("./asset/immr_arima_forecast.png")
+        st.image("./asset/immr_arima_perf.png")
+    elif (ticker == "FB"):
+        st.image("./asset/fb_arima_forecast.png")
+        st.image("./asset/fb_arima_perf.png")
+    elif (ticker == "U"):
+        st.image("./asset/u_arima_forecast.png")
+        st.image("./asset/u_arima_perf.png")
+    elif (ticker == "NVDA"):
+        st.image("./asset/nvda_arima_forecast.png")
+        st.image("./asset/nvda_arima_perf.png")
+    elif (ticker == "AAPL"):
+        st.image("./asset/aapl_arima_forecast.png")
+        st.image("./asset/aapl_arima_perf.png")
+    elif (ticker == "MSFT"):
+        st.image("./asset/msft_arima_forecast.png")
+        st.image("./asset/msft_arima_perf.png")
+    elif (ticker == "METV"):
+        st.image("./asset/metv_arima_forecast.png")
+        st.image("./asset/metv_arima_perf.png")
 
 
     
